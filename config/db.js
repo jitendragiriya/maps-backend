@@ -1,13 +1,20 @@
-const { Pool } = require('pg');
+const { Client } = require("pg");
 
-const pool = new Pool({
-  user: `${process.env.DATABASE_USERNAME}`,
-  host: `${process.env.DATABASE_HOST}`,
-  database: `${process.env.DATABASE_COLLECTION}`,
-  password: `${process.env.DATABASE_PASSWORD}`,
-  port: 5432, // Default PostgreSQL port
-})
+// Create a new PostgreSQL client
+const client = new Client({
+  connectionString: `${process.env.DATABASE_URL}`,
+});
+
+// Connect to the database
+client
+  .connect()
+  .then(() => {
+    console.log("Connected to the database");
+  })
+  .catch((err) => {
+    console.error("Error connecting to the database:", err);
+  });
 
 module.exports = {
-  query: (text, params) => pool.query(text, params),
+  query: (text, params) => client.query(text, params),
 };

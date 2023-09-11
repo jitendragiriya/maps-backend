@@ -9,7 +9,7 @@ const addLocation = async (req, res) => {
   try {
     const { latitude, longitude } = req.body;  
     const check =
-      "SELECT * FROM locations where latitude = $1 AND longitude = $2";
+      "SELECT * FROM location where latitude = $1 AND longitude = $2";
     const values = [latitude, longitude];
     const datas = await db.query(check, values);
 
@@ -18,7 +18,7 @@ const addLocation = async (req, res) => {
     }
 
     const query =
-      "INSERT INTO locations (latitude, longitude) VALUES ($1, $2) RETURNING *";
+      "INSERT INTO location (latitude, longitude) VALUES ($1, $2) RETURNING *";
     const result = await db.query(query, values);
     res.json(result.rows[0]);
   } catch (error) {
@@ -31,7 +31,7 @@ const addLocation = async (req, res) => {
 const getDefaultLocation = async (req, res) => {
   try {
     const check =
-      "SELECT * FROM locations where latitude = $1 AND longitude = $2";
+      "SELECT * FROM location where latitude = $1 AND longitude = $2";
     const values = [
       process.env.DEFAULT_LATITUDE,
       process.env.DEFAULT_LONGITUDE,
